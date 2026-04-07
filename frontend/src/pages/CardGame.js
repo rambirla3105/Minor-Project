@@ -137,23 +137,24 @@ export default function CardGame() {
                 key={card.id}
                 data-testid={`card-${card.id}`}
                 onClick={() => handleCardClick(card)}
-                className="aspect-square cursor-pointer perspective-1000"
+                className="card-game-item aspect-square cursor-pointer"
+                style={{ perspective: '1000px' }}
                 whileHover={{ scale: 1.05 }}
               >
                 <div
-                  className={`w-full h-full relative transition-transform duration-500 transform-style-3d ${
+                  className={`w-full h-full relative transition-transform duration-500 ${
                     isFlipped ? 'rotate-y-180' : ''
                   }`}
                   style={{ transformStyle: 'preserve-3d' }}
                 >
                   {/* Back */}
-                  <div className="absolute w-full h-full neo-card bg-[#FF6B35] flex items-center justify-center backface-hidden">
+                  <div className="absolute w-full h-full neo-card bg-[#FF6B35] flex items-center justify-center" style={{ backfaceVisibility: 'hidden' }}>
                     <Cards size={48} weight="bold" className="text-white" />
                   </div>
                   
                   {/* Front */}
                   <div 
-                    className="absolute w-full h-full neo-card backface-hidden rotate-y-180 p-4 overflow-hidden"
+                    className="absolute w-full h-full neo-card p-4 overflow-hidden"
                     style={{ transform: 'rotateY(180deg)', backfaceVisibility: 'hidden' }}
                   >
                     {card.type === 'question' ? (
