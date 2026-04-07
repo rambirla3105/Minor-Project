@@ -3,16 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Book, Target, Trophy, Users, Star, ArrowRight, GraduationCap } from '@phosphor-icons/react';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { API } from '../contexts/AuthContext';
+import AuthModal from '../components/AuthModal';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { isAuthenticated, login, register } = useAuth();
   const [showAuth, setShowAuth] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,22 +31,25 @@ export default function LandingPage() {
     seedData();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleLogin = async (email, password) => {
     try {
-      if (isLogin) {
-        await login(formData.email, formData.password);
-        toast.success('Login successful!');
-      } else {
-        await register(formData.name, formData.email, formData.password);
-        toast.success('Registration successful!');
-      }
+      await login(email, password);
+      toast.success('Login successful!');
       navigate('/dashboard');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Authentication failed');
-    } finally {
-      setLoading(false);
+      toast.error(error.response?.data?.detail || 'Login failed');
+      throw error;
+    }
+  };
+
+  const handleRegister = async (name, email, password) => {
+    try {
+      await register(name, email, password);
+      toast.success('Account created successfully!');
+      navigate('/dashboard');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Registration failed');
+      throw error;
     }
   };
 
@@ -183,76 +185,12 @@ export default function LandingPage() {
       </section>
 
       {/* Auth Modal */}
-      {showAuth && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white border-2 border-[#1A237E] shadow-[8px_8px_0px_#1A237E] rounded-xl p-8 max-w-md w-full">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1A237E] mb-6 font-heading">
-              {isLogin ? 'Welcome Back' : 'Get Started'}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
-                <div>
-                  <label className="block text-sm font-bold uppercase tracking-[0.2em] text-[#1A237E]/70 mb-2">Name</label>
-                  <input
-                    data-testid="auth-name-input"
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="neo-input w-full"
-                    required={!isLogin}
-                  />
-                </div>
-              )}
-              <div>
-                <label className="block text-sm font-bold uppercase tracking-[0.2em] text-[#1A237E]/70 mb-2">Email</label>
-                <input
-                  data-testid="auth-email-input"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="neo-input w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold uppercase tracking-[0.2em] text-[#1A237E]/70 mb-2">Password</label>
-                <input
-                  data-testid="auth-password-input"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="neo-input w-full"
-                  required
-                />
-              </div>
-              <button 
-                data-testid="auth-submit-btn"
-                type="submit" 
-                className="neo-btn-primary w-full" 
-                disabled={loading}
-              >
-                {loading ? 'Processing...' : (isLogin ? 'Login' : 'Register')}
-              </button>
-            </form>
-            <div className="mt-4 text-center">
-              <button
-                data-testid="auth-toggle-btn"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-[#FF6B35] font-bold hover:underline"
-              >
-                {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
-              </button>
-            </div>
-            <button
-              data-testid="auth-close-btn"
-              onClick={() => setShowAuth(false)}
-              className="mt-4 text-[#1A237E]/70 font-bold hover:text-[#1A237E] w-full"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <AuthModal 
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        onLogin={handleLogin}
+        onRegister={handleRegister}
+      />
     </div>
   );
 }

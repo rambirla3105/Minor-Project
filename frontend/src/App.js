@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from './components/ui/sonner';
+import LoadingScreen from './components/LoadingScreen';
 import '@/App.css';
 
 // Pages
@@ -45,6 +46,20 @@ const AdminRoute = ({ children }) => {
 };
 
 function AppContent() {
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <>
       <Routes>
