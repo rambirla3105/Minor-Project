@@ -18,6 +18,7 @@ import ChooseViolationGame from './pages/ChooseViolationGame';
 import Analytics from './pages/Analytics';
 import AdminPanel from './pages/AdminPanel';
 import ProfilePage from './pages/ProfilePage';
+import LearnPage from './pages/LearnPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -58,6 +59,7 @@ function AppContent() {
         <Route path="/games/choose-violation" element={<ProtectedRoute><ChooseViolationGame /></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/learn" element={<ProtectedRoute><LearnPage /></ProtectedRoute>} />
         <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
       </Routes>
       <Toaster position="top-right" />

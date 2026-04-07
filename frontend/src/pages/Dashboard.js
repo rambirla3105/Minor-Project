@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth, API } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { Book, SignOut, ChartBar, GameController, MagnifyingGlass, FunnelSimple, GearSix, Cube, Cards, Star, Target, Gavel, Warning, Moon, Sun, UserCircle } from '@phosphor-icons/react';
+import { Book, SignOut, ChartBar, GameController, MagnifyingGlass, FunnelSimple, GearSix, Cube, Cards, Star, Target, Gavel, Warning, Moon, Sun, UserCircle, GraduationCap, Translate } from '@phosphor-icons/react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import Footer from '../components/Footer';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -118,6 +119,14 @@ export default function Dashboard() {
               <ChartBar size={20} weight="bold" />
               <span className="hidden sm:inline">Analytics</span>
             </button>
+            <button
+              data-testid="learn-btn"
+              onClick={() => navigate('/learn')}
+              className="neo-btn-secondary flex items-center gap-2"
+            >
+              <GraduationCap size={20} weight="bold" />
+              <span className="hidden sm:inline">Learn</span>
+            </button>
             {isAdmin && (
               <button
                 data-testid="admin-panel-btn"
@@ -143,84 +152,84 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* User Stats */}
         <div className="grid sm:grid-cols-3 gap-6 mb-8">
-          <div className="neo-card">
-            <h3 className="text-lg font-bold text-[#1A237E]/70 mb-2">Total Score</h3>
+          <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F]">
+            <h3 className="text-lg font-bold text-[#1A237E]/70 dark:text-[#FDFBF7]/70 mb-2">Total Score</h3>
             <p className="text-4xl font-black text-[#FF6B35] font-heading">{user?.totalScore || 0}</p>
           </div>
-          <div className="neo-card">
-            <h3 className="text-lg font-bold text-[#1A237E]/70 mb-2">Articles Completed</h3>
+          <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F]">
+            <h3 className="text-lg font-bold text-[#1A237E]/70 dark:text-[#FDFBF7]/70 mb-2">Articles Completed</h3>
             <p className="text-4xl font-black text-[#00E676] font-heading">{user?.completedArticles?.length || 0}</p>
           </div>
-          <div className="neo-card">
-            <h3 className="text-lg font-bold text-[#1A237E]/70 mb-2">Badges Earned</h3>
+          <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F]">
+            <h3 className="text-lg font-bold text-[#1A237E]/70 dark:text-[#FDFBF7]/70 mb-2">Badges Earned</h3>
             <p className="text-4xl font-black text-[#29B6F6] font-heading">{user?.badges?.length || 0}</p>
           </div>
         </div>
 
         {/* Games Section */}
         <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1A237E] mb-6 font-heading">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[#1A237E] dark:text-[#FDFBF7] mb-6 font-heading">
             Play Games
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <button
               onClick={() => navigate('/games/quiz')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-quiz"
             >
               <Target size={48} weight="bold" className="text-[#FF6B35] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Quiz Challenge</h3>
-              <p className="text-sm text-[#1A237E]/70">Test your knowledge with multiple choice questions</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Quiz Challenge</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Test your knowledge with multiple choice questions</p>
             </button>
             
             <button
               onClick={() => navigate('/games/spin-wheel')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-spin-wheel"
             >
               <Star size={48} weight="bold" className="text-[#FFD54F] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Spin the Wheel</h3>
-              <p className="text-sm text-[#1A237E]/70">Spin and answer random article questions</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Spin the Wheel</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Spin and answer random article questions</p>
             </button>
             
             <button
               onClick={() => navigate('/games/snake-ladder')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-snake-ladder"
             >
               <Cube size={48} weight="bold" className="text-[#00E676] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Snake & Ladder</h3>
-              <p className="text-sm text-[#1A237E]/70">Climb ladders and avoid snakes on the board</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Snake & Ladder</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Climb ladders and avoid snakes on the board</p>
             </button>
             
             <button
               onClick={() => navigate('/games/card')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-card"
             >
               <Cards size={48} weight="bold" className="text-[#29B6F6] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Memory Cards</h3>
-              <p className="text-sm text-[#1A237E]/70">Match articles with their institutions</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Memory Cards</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Match articles with their institutions</p>
             </button>
             
             <button
               onClick={() => navigate('/games/be-the-judge')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-be-judge"
             >
               <Gavel size={48} weight="bold" className="text-[#FF6B35] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Be The Judge</h3>
-              <p className="text-sm text-[#1A237E]/70">Apply the right article to legal scenarios</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Be The Judge</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Apply the right article to legal scenarios</p>
             </button>
             
             <button
               onClick={() => navigate('/games/choose-violation')}
-              className="neo-card hover:-translate-y-2 transition-transform text-left group"
+              className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] hover:-translate-y-2 transition-transform text-left group"
               data-testid="game-violation"
             >
               <Warning size={48} weight="bold" className="text-[#FFD54F] mb-3" />
-              <h3 className="text-xl font-bold text-[#1A237E] mb-2 font-heading">Choose Violation</h3>
-              <p className="text-sm text-[#1A237E]/70">Identify all constitutional violations</p>
+              <h3 className="text-xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-2 font-heading">Choose Violation</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Identify all constitutional violations</p>
             </button>
           </div>
         </div>
@@ -344,6 +353,8 @@ export default function Dashboard() {
           )}
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }

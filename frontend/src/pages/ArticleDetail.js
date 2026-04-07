@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth, API } from '../contexts/AuthContext';
-import { ArrowLeft, Star, BookOpen, Lightbulb, Target, Gavel, Cards } from '@phosphor-icons/react';
+import { ArrowLeft, Star, BookOpen, Lightbulb, Target, Gavel, Cards, Translate } from '@phosphor-icons/react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import Footer from '../components/Footer';
 
 export default function ArticleDetail() {
   const { id } = useParams();
@@ -13,15 +14,24 @@ export default function ArticleDetail() {
   const [loading, setLoading] = useState(true);
   const [simplifying, setSimplifying] = useState(false);
   const [aiSimplified, setAiSimplified] = useState('');
+  const [language, setLanguage] = useState('en');
+  const [alternateArticle, setAlternateArticle] = useState(null);
 
   useEffect(() => {
     fetchArticle();
   }, [id]);
 
+  useEffect(() => {
+    if (article) {
+      fetchAlternateLanguage();
+    }
+  }, [language, article]);
+
   const fetchArticle = async () => {
     try {
       const response = await axios.get(`${API}/articles/${id}`);
       setArticle(response.data);
+      setLanguage(response.data.language);
     } catch (error) {
       toast.error('Failed to fetch article');
       navigate('/dashboard');
@@ -30,12 +40,24 @@ export default function ArticleDetail() {
     }
   };
 
+  const fetchAlternateLanguage = async () => {
+    try {
+      const response = await axios.get(`${API}/articles?articleNumber=${article.articleNumber}&language=${language}`);
+      if (response.data.length > 0) {
+        setAlternateArticle(response.data[0]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch alternate language');
+    }
+  };
+
   const handleAISimplify = async () => {
     setSimplifying(true);
     try {
+      const displayArticle = alternateArticle || article;
       const response = await axios.post(
         `${API}/articles/simplify`,
-        { text: article.originalText, language: article.language },
+        { text: displayArticle.originalText, language: displayArticle.language },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAiSimplified(response.data.simplifiedText);
@@ -49,18 +71,20 @@ export default function ArticleDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7]">
-        <p className="text-2xl font-bold text-[#1A237E]">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#FDFBF7] dark:bg-[#0A0A0B]">
+        <p className="text-2xl font-bold text-[#1A237E] dark:text-[#FDFBF7]">Loading...</p>
       </div>
     );
   }
 
   if (!article) return null;
 
+  const displayArticle = alternateArticle || article;
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0B]">
       <header className="bg-[#FDFBF7] dark:bg-[#0A0A0B] border-b-2 border-[#1A237E] dark:border-[#FFD54F] sticky top-0 z-50 py-4">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <button
             data-testid="back-to-dashboard-btn"
             onClick={() => navigate('/dashboard')}
@@ -68,6 +92,14 @@ export default function ArticleDetail() {
           >
             <ArrowLeft size={24} weight="bold" />
             Back to Dashboard
+          </button>
+          <button
+            data-testid="article-language-toggle-btn"
+            onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+            className="neo-btn-secondary flex items-center gap-2"
+          >
+            <Translate size={20} weight="bold" />
+            {language === 'en' ? '\u0939\u093f\u0902\u0926\u0940' : 'English'}
           </button>
         </div>
       </header>
@@ -80,11 +112,14 @@ export default function ArticleDetail() {
                 Article {article.articleNumber}
               </h1>
               <div className="flex gap-2 flex-wrap">
-                <span className="bg-[#29B6F6] text-white font-bold text-sm px-4 py-2 rounded-full border-2 border-[#1A237E]">
-                  {article.institution}
+                <span className="bg-[#29B6F6] text-white font-bold text-sm px-4 py-2 rounded-full border-2 border-[#1A237E] dark:border-[#FFD54F]">
+                  {displayArticle.institution}
                 </span>
-                <span className="bg-[#FFD54F] text-[#1A237E] font-bold text-sm px-4 py-2 rounded-full border-2 border-[#1A237E]">
-                  {article.difficulty}
+                <span className="bg-[#FFD54F] text-[#1A237E] font-bold text-sm px-4 py-2 rounded-full border-2 border-[#1A237E] dark:border-[#FFD54F]">
+                  {displayArticle.difficulty}
+                </span>
+                <span className="bg-[#00E676] text-[#1A237E] font-bold text-sm px-4 py-2 rounded-full border-2 border-[#1A237E] dark:border-[#FFD54F]">
+                  {language === 'en' ? 'English' : 'Hindi'}
                 </span>
               </div>
             </div>
@@ -96,33 +131,33 @@ export default function ArticleDetail() {
             <BookOpen size={24} weight="bold" className="text-[#1A237E]" />
             <h2 className="text-2xl font-bold text-[#1A237E] font-heading">Original Text</h2>
           </div>
-          <p className="text-base font-medium text-[#1A237E]/80 leading-relaxed italic border-l-4 border-[#FF6B35] pl-4">
-            {article.originalText}
+          <p className="text-base font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed italic border-l-4 border-[#FF6B35] pl-4">
+            {displayArticle.originalText}
           </p>
         </div>
 
-        <div className="neo-card mb-8">
+        <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Lightbulb size={24} weight="bold" className="text-[#FFD54F]" />
-            <h2 className="text-2xl font-bold text-[#1A237E] font-heading">Simplified Explanation</h2>
+            <h2 className="text-2xl font-bold text-[#1A237E] dark:text-[#FDFBF7] font-heading">Simplified Explanation</h2>
           </div>
-          <p className="text-lg font-medium text-[#1A237E] leading-relaxed">
-            {article.simplifiedText}
+          <p className="text-lg font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed">
+            {displayArticle.simplifiedText}
           </p>
         </div>
 
-        <div className="neo-card mb-8">
-          <h2 className="text-2xl font-bold text-[#1A237E] mb-4 font-heading">Real-World Example</h2>
-          <p className="text-base font-medium text-[#1A237E]/80 leading-relaxed">
-            {article.example}
+        <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F] mb-8">
+          <h2 className="text-2xl font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-4 font-heading">Real-World Example</h2>
+          <p className="text-base font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed">
+            {displayArticle.example}
           </p>
         </div>
 
-        <div className="neo-card">
+        <div className="neo-card dark:bg-[#1A1A1B] dark:border-[#FFD54F]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-2">
               <Star size={24} weight="bold" className="text-[#FF6B35]" />
-              <h2 className="text-2xl font-bold text-[#1A237E] font-heading">AI Simplification</h2>
+              <h2 className="text-2xl font-bold text-[#1A237E] dark:text-[#FDFBF7] font-heading">AI Simplification</h2>
             </div>
             <button
               data-testid="ai-simplify-btn"
@@ -134,11 +169,11 @@ export default function ArticleDetail() {
             </button>
           </div>
           {aiSimplified ? (
-            <p className="text-lg font-medium text-[#1A237E] leading-relaxed bg-[#F0EFEA] p-4 rounded-lg border-2 border-[#1A237E]">
+            <p className="text-lg font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed bg-[#F0EFEA] dark:bg-[#0A0A0B] p-4 rounded-lg border-2 border-[#1A237E] dark:border-[#FFD54F]">
               {aiSimplified}
             </p>
           ) : (
-            <p className="text-base font-medium text-[#1A237E]/60 italic">
+            <p className="text-base font-medium text-[#1A237E]/60 dark:text-[#FDFBF7]/60 italic">
               Click the button above to get an AI-powered simplification of this article.
             </p>
           )}
@@ -202,6 +237,8 @@ export default function ArticleDetail() {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }
