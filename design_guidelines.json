@@ -1,0 +1,97 @@
+{
+  "project_title": "Sansthaein Aur Samvidhan",
+  "theme": "Light",
+  "archetype": "6 (Vibrant Play) with a Neo-Brutalist Twist",
+  "emotional_tone": "Engaging, Authoritative, Playful, and Trustworthy",
+  "design_philosophy": "Neo-brutalist vibrancy. The platform balances gamified, colorful learning (Archetype 6) with structured, high-contrast clarity required for constitutional reading (Archetype 4 influences). It uses stark borders, hard shadows, and bold typography to create a memorable, non-governmental experience that appeals to both kids and competitive exam aspirants.",
+  "colors": {
+    "background_base": "#FDFBF7",
+    "primary": "#FF6B35",
+    "primary_hover": "#E65A28",
+    "secondary_text_border": "#1A237E",
+    "accent_success": "#00E676",
+    "accent_warning": "#FFD54F",
+    "accent_info": "#29B6F6",
+    "card_background": "#FFFFFF",
+    "muted_background": "#F0EFEA"
+  },
+  "typography": {
+    "heading_font": "Cabinet Grotesk",
+    "body_font": "Figtree",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#1A237E]",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#1A237E]",
+      "h3": "text-xl sm:text-2xl font-bold tracking-tight text-[#1A237E]",
+      "h4": "text-lg sm:text-xl font-bold text-[#1A237E]",
+      "body": "text-base font-medium text-[#1A237E]/80 leading-relaxed",
+      "small_label": "text-sm font-bold uppercase tracking-[0.2em] text-[#1A237E]/70"
+    }
+  },
+  "surfaces_and_components": {
+    "cards": {
+      "style": "Neo-Brutalist Solid",
+      "classes": "bg-white border-2 border-[#1A237E] shadow-[4px_4px_0px_#1A237E] rounded-xl p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-[6px_6px_0px_#1A237E]"
+    },
+    "buttons": {
+      "primary": "bg-[#FF6B35] text-white font-bold border-2 border-[#1A237E] shadow-[3px_3px_0px_#1A237E] rounded-lg px-6 py-3 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#1A237E] hover:bg-[#E65A28] transition-all",
+      "secondary": "bg-[#FFD54F] text-[#1A237E] font-bold border-2 border-[#1A237E] shadow-[3px_3px_0px_#1A237E] rounded-lg px-6 py-3 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_#1A237E] hover:bg-[#FACC15] transition-all",
+      "ghost": "bg-transparent text-[#1A237E] font-bold border-2 border-transparent hover:border-[#1A237E] rounded-lg px-6 py-3 transition-all"
+    },
+    "inputs": {
+      "style": "bg-white border-2 border-[#1A237E] rounded-lg px-4 py-3 text-base text-[#1A237E] placeholder:text-[#1A237E]/40 focus:outline-none focus:ring-0 focus:border-[#FF6B35] focus:shadow-[3px_3px_0px_#FF6B35] transition-all"
+    },
+    "header": {
+      "style": "bg-[#FDFBF7] border-b-2 border-[#1A237E] sticky top-0 z-50 py-4"
+    }
+  },
+  "layout": {
+    "spacing_scale": "Generous (p-6, p-8, p-12, gap-8)",
+    "grid_strategy": "Tetris Grid for marketing pages (asymmetric spans); Control Room Grid (dense bento box) for Analytics Dashboard. Ensure all grids are responsive starting mobile-first.",
+    "container_max_width": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  },
+  "icons": {
+    "library": "@phosphor-icons/react",
+    "weight": "bold",
+    "usage": "Use bold, distinct icons to match the neo-brutalist border weight."
+  },
+  "animation": {
+    "hover_states": "Hard translations (e.g., hover:-translate-y-1) paired with expanding solid shadows rather than blurred drop-shadows.",
+    "page_transitions": "Staggered fade-ins with upward slight movement for bento grid children."
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1637589316488-6d4c41b335cd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBzdHVkZW50cyUyMHN0dWR5aW5nJTIwbW9kZXJufGVufDB8fHx8MTc3NTUzMzY4Nnww&ixlib=rb-4.1.0&q=85",
+      "category": "Hero Section",
+      "description": "Indian students studying, to be used with a heavy blend mode or gradient overlay (e.g., bg-[#1A237E]/80 mix-blend-multiply) to allow text readability."
+    },
+    "constitution_article_header": {
+      "url": "https://images.unsplash.com/photo-1701790645820-3509837adc95?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2OTV8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjBjb25zdGl0dXRpb24lMjBib29rJTIwbGF3fGVufDB8fHx8MTc3NTUzMzY4Nnww&ixlib=rb-4.1.0&q=85",
+      "category": "Article Simplification Page",
+      "description": "Law books for the header of the reading sections."
+    },
+    "game_snake_ladder": {
+      "url": "https://images.unsplash.com/photo-1642056446459-1f10774273f2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MTJ8MHwxfHNlYXJjaHwxfHxzbmFrZSUyMGFuZCUyMGxhZGRlciUyMGJvYXJkJTIwZ2FtZXxlbnwwfHx8fDE3NzU1MzM3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "category": "Snake & Ladder Cover",
+      "description": "Board game cover for the selection menu."
+    },
+    "institution_parliament": {
+      "url": "https://images.unsplash.com/photo-1760872645959-98d5fdb49287?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBwYXJsaWFtZW50JTIwYnVpbGRpbmd8ZW58MHx8fHwxNzc1NTMzNzAwfDA&ixlib=rb-4.1.0&q=85",
+      "category": "Institution Card (Legislature)",
+      "description": "Indian Parliament building for the Legislature institution filter card."
+    },
+    "game_spin_wheel": {
+      "url": "https://images.unsplash.com/photo-1772710954657-48fd139b61a6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NjZ8MHwxfHNlYXJjaHwyfHxmb3J0dW5lJTIwc3Bpbm5pbmclMjB3aGVlbHxlbnwwfHx8fDE3NzU1MzM3MDB8MA&ixlib=rb-4.1.0&q=85",
+      "category": "Spin the Wheel Cover",
+      "description": "Wheel of fortune style background for the spin game."
+    }
+  },
+  "instructions_to_main_agent": {
+    "1": "Use pure HTML/Tailwind for the landing/marketing page. Do not use generic Shadcn cards there; build custom neo-brutalist divs with the provided shadow and border utility classes.",
+    "2": "For the Analytics Dashboard, use Shadcn UI components (Tables, Charts) but HEAVILY customize them: override default light-gray borders with `border-[#1A237E]` and apply the custom hard shadows.",
+    "3": "Include `data-testid` on all interactive elements (buttons, inputs, game interactables).",
+    "4": "Ensure font installations: add standard Google Fonts links for `Cabinet Grotesk` (or substitute with `Outfit` if unavailable) and `Figtree`.",
+    "5": "Do not use 'Inter' for headings. Never use teal or purple as primary colors. Stick strictly to the Saffron/Navy/Off-White palette provided.",
+    "6": "Install @phosphor-icons/react for iconography.",
+    "7": "Use Framer Motion for the game elements (Spin the Wheel rotation, Snake and Ladder token movement, Card flipping)."
+  }
+}
