@@ -169,12 +169,39 @@ export default function ArticleDetail() {
             </button>
           </div>
           {aiSimplified ? (
-            <p className="text-lg font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed bg-[#F0EFEA] dark:bg-[#0A0A0B] p-4 rounded-lg border-2 border-[#1A237E] dark:border-[#FFD54F]">
-              {aiSimplified}
-            </p>
+            <div className="text-base font-medium text-[#1A237E] dark:text-[#FDFBF7] leading-relaxed bg-[#F0EFEA] dark:bg-[#0A0A0B] p-6 rounded-lg border-2 border-[#1A237E] dark:border-[#FFD54F]">
+              <div className="prose prose-lg max-w-none dark:prose-invert" style={{ whiteSpace: 'pre-wrap' }}>
+                {aiSimplified.split('\n').map((line, index) => {
+                  // Handle bold text
+                  if (line.includes('**')) {
+                    const parts = line.split('**');
+                    return (
+                      <p key={index} className="mb-3">
+                        {parts.map((part, i) => 
+                          i % 2 === 1 ? <strong key={i} className="font-bold text-[#FF6B35]">{part}</strong> : part
+                        )}
+                      </p>
+                    );
+                  }
+                  // Handle bullet points
+                  if (line.trim().startsWith('*')) {
+                    return (
+                      <li key={index} className="ml-6 mb-2 list-disc">
+                        {line.replace(/^\*\s*/, '')}
+                      </li>
+                    );
+                  }
+                  // Regular paragraphs
+                  if (line.trim()) {
+                    return <p key={index} className="mb-3">{line}</p>;
+                  }
+                  return <br key={index} />;
+                })}
+              </div>
+            </div>
           ) : (
             <p className="text-base font-medium text-[#1A237E]/60 dark:text-[#FDFBF7]/60 italic">
-              Click the button above to get an AI-powered simplification of this article.
+              Click the button above to get an AI-powered detailed simplification with examples and scenarios.
             </p>
           )}
         </div>

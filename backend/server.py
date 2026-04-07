@@ -328,15 +328,36 @@ async def simplify_article(request: SimplifyRequest):
         chat = LlmChat(
             api_key=os.environ.get('EMERGENT_LLM_KEY'),
             session_id=str(uuid.uuid4()),
-            system_message="You are an expert at simplifying legal and constitutional text for students and general citizens. Provide clear, simple explanations."
+            system_message="You are an expert at simplifying legal and constitutional text for students and general citizens. Provide clear, detailed, and structured explanations."
         ).with_model("gemini", "gemini-3-flash-preview")
         
         language = "Hindi" if request.language == "hi" else "English"
         
+        # Create enhanced prompt for better formatting
+        prompt = f"""Simplify the following constitutional article in {language} for easy understanding by students and general citizens.
+
+Article Text: {request.text}
+
+Please provide a comprehensive explanation in this exact format:
+
+**Simple Explanation:**
+[Provide a clear, one-paragraph explanation in simple words that anyone can understand]
+
+**Key Points to Remember:**
+* [Point 1 with bold headings and clear explanation]
+* [Point 2 with bold headings and clear explanation]
+* [Point 3 with bold headings and clear explanation]
+
+**Real-World Example:**
+[Provide a practical, relatable example from everyday life that demonstrates this article]
+
+**Scenario:**
+[Create a short story or situation showing how this article works in practice]
+
+Make it engaging, easy to understand, and use simple vocabulary. Avoid legal jargon."""
+        
         # Create user message
-        user_message = UserMessage(
-            text=f"Simplify the following constitutional article in {language} for easy understanding by students. Keep it concise and clear:\n\n{request.text}"
-        )
+        user_message = UserMessage(text=prompt)
         
         # Send message and get response
         response = await chat.send_message(user_message)
