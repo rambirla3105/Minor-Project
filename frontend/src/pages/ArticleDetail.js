@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth, API } from '../contexts/AuthContext';
-import { ArrowLeft, Star, BookOpen, Lightbulb, Target, Gavel, Cards, Translate } from '@phosphor-icons/react';
+import { ArrowLeft, Star, BookOpen, Lightbulb, Target, Gavel, Cards, Translate, Cube, Warning } from '@phosphor-icons/react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import Footer from '../components/Footer';
@@ -213,7 +213,7 @@ export default function ArticleDetail() {
             Test your understanding of Article {article.articleNumber} through these interactive games:
           </p>
           
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <button
               onClick={() => navigate(`/games/quiz?article=${article.id}`)}
               className="neo-card dark:bg-[#0A0A0B] dark:border-[#FFD54F] hover:-translate-y-1 transition-transform text-left group"
@@ -237,6 +237,18 @@ export default function ArticleDetail() {
                 Apply this article to real-world scenarios
               </p>
             </button>
+
+            <button
+              onClick={() => navigate(`/games/choose-violation?article=${article.id}`)}
+              className="neo-card dark:bg-[#0A0A0B] dark:border-[#FFD54F] hover:-translate-y-1 transition-transform text-left group"
+              data-testid="article-violation-btn"
+            >
+              <Warning size={40} weight="bold" className="text-[#FFD54F] mb-2" />
+              <h3 className="text-lg font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-1 font-heading">Choose Violation</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">
+                Identify constitutional violations in scenarios
+              </p>
+            </button>
             
             <button
               onClick={() => navigate('/games/spin-wheel')}
@@ -249,6 +261,18 @@ export default function ArticleDetail() {
                 Practice with random article challenges
               </p>
             </button>
+
+            <button
+              onClick={() => navigate('/games/snake-ladder')}
+              className="neo-card dark:bg-[#0A0A0B] dark:border-[#FFD54F] hover:-translate-y-1 transition-transform text-left group"
+              data-testid="article-snake-ladder-btn"
+            >
+              <Cube size={40} weight="bold" className="text-[#00E676] mb-2" />
+              <h3 className="text-lg font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-1 font-heading">Snake & Ladder</h3>
+              <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">
+                Climb ladders and dodge snakes on the board
+              </p>
+            </button>
             
             <button
               onClick={() => navigate('/games/card')}
@@ -256,7 +280,7 @@ export default function ArticleDetail() {
               data-testid="article-memory-btn"
             >
               <Cards size={40} weight="bold" className="text-[#00E676] mb-2" />
-              <h3 className="text-lg font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-1 font-heading">Memory Game</h3>
+              <h3 className="text-lg font-bold text-[#1A237E] dark:text-[#FDFBF7] mb-1 font-heading">Memory Cards</h3>
               <p className="text-sm text-[#1A237E]/70 dark:text-[#FDFBF7]/70">
                 Match articles with their institutions
               </p>
