@@ -458,6 +458,61 @@ async def get_admin_analytics(admin: dict = Depends(get_admin_user)):
 
 # ========== Seed Data Route ==========
 
+@api_router.post("/seed-hindi")
+async def seed_hindi_articles():
+    """Add Hindi versions of all English articles"""
+    english_articles = await db.articles.find({"language": "en"}, {"_id": 0}).to_list(1000)
+    
+    hindi_translations = {
+        1: {"simplifiedText": "भारत (जिसे भारत भी कहा जाता है) विभिन्न राज्यों का एक संघ है जो एक साथ काम करते हैं।", "example": "जैसे भारत के विभिन्न राज्य एक सरकार के तहत मिलकर काम करते हैं।"},
+        14: {"simplifiedText": "भारत में सभी लोग कानून के सामने समान हैं। सरकार किसी के साथ अन्यायपूर्ण व्यवहार नहीं कर सकती।", "example": "अमीर हो या गरीब, सभी को अदालत में समान अधिकार हैं।"},
+        19: {"simplifiedText": "प्रत्येक नागरिक को स्वतंत्र रूप से बोलने और अपनी राय व्यक्त करने का अधिकार है।", "example": "आप अपने विचार साझा कर सकते हैं, लेख लिख सकते हैं, या शांतिपूर्ण विरोध कर सकते हैं।"},
+        21: {"simplifiedText": "हर किसी को जीवन और स्वतंत्रता का अधिकार है। इन्हें केवल उचित कानूनी प्रक्रिया के माध्यम से ही छीना जा सकता है।", "example": "आपको उचित कानूनी प्रक्रिया के बिना गिरफ्तार या जेल नहीं भेजा जा सकता।"},
+        32: {"simplifiedText": "यदि आपके मौलिक अधिकारों का उल्लंघन होता है, तो आप सीधे सर्वोच्च न्यायालय जा सकते हैं।", "example": "यदि कोई आपको अपने धर्म का पालन करने से रोकता है, तो आप सर्वोच्च न्यायालय में मामला दर्ज कर सकते हैं।"},
+        44: {"simplifiedText": "सरकार को सभी नागरिकों के लिए समान नागरिक कानून बनाने का प्रयास करना चाहिए।", "example": "सभी के लिए विवाह, तलाक और विरासत के समान कानून।"},
+        51: {"simplifiedText": "प्रत्येक नागरिक को संविधान का पालन करना और इसके आदर्शों का सम्मान करना चाहिए।", "example": "राष्ट्रीय ध्वज, गान का सम्मान करें और कानूनों का पालन करें।"},
+        52: {"simplifiedText": "भारत में एक राष्ट्रपति होंगे जो राज्य के प्रमुख होंगे।", "example": "राष्ट्रपति पहले नागरिक हैं और राष्ट्र का प्रतिनिधित्व करते हैं।"},
+        53: {"simplifiedText": "राष्ट्रपति देश की कार्यकारी शक्ति रखते हैं।", "example": "राष्ट्रपति राष्ट्र के लिए महत्वपूर्ण निर्णय ले सकते हैं।"},
+        74: {"simplifiedText": "प्रधानमंत्री और मंत्रिपरिषद राष्ट्रपति की सहायता और सलाह देते हैं।", "example": "प्रधानमंत्री और मंत्री सरकार चलाते हैं और राष्ट्रपति को सलाह देते हैं।"},
+        76: {"simplifiedText": "राष्ट्रपति महान्यायवादी की नियुक्ति करते हैं जो सर्वोच्च न्यायालय के न्यायाधीश बनने के योग्य होना चाहिए।", "example": "महान्यायवादी सरकार के मुख्य कानूनी सलाहकार हैं।"},
+        79: {"simplifiedText": "भारत की संसद में तीन भाग हैं: राष्ट्रपति, राज्य सभा (राज्यों की परिषद), और लोक सभा (लोगों का सदन)।", "example": "कानून तब बनते हैं जब दोनों सदन और राष्ट्रपति सहमत होते हैं।"},
+        80: {"simplifiedText": "राज्यसभा में अधिकतम 250 सदस्य हो सकते हैं।", "example": "वर्तमान में, राज्यसभा में राज्यों का प्रतिनिधित्व करने वाले 245 सदस्य हैं।"},
+        81: {"simplifiedText": "लोकसभा में लोगों द्वारा सीधे चुने गए अधिकतम 550 सदस्य हो सकते हैं।", "example": "नागरिक अपने लोकसभा प्रतिनिधियों को चुनने के लिए चुनाव में मतदान करते हैं।"},
+        123: {"simplifiedText": "जब संसद का सत्र नहीं चल रहा हो, तो राष्ट्रपति आपातकालीन आदेश जारी कर सकते हैं जिन्हें अध्यादेश कहा जाता है।", "example": "आपात स्थिति के दौरान, राष्ट्रपति अस्थायी कानून बना सकते हैं।"},
+        124: {"simplifiedText": "भारत में सर्वोच्च न्यायालय सर्वोच्च न्यायालय के रूप में होगा।", "example": "सर्वोच्च न्यायालय कानूनी मामलों पर अंतिम प्राधिकरण है।"},
+        226: {"simplifiedText": "उच्च न्यायालय आपके मौलिक अधिकारों की रक्षा के लिए विशेष आदेश जारी कर सकते हैं।", "example": "यदि आपके अधिकारों का उल्लंघन होता है, तो आप उच्च न्यायालय जा सकते हैं।"},
+        262: {"simplifiedText": "संसद राज्यों के बीच पानी के बंटवारे के विवादों को हल करने के लिए कानून बना सकती है।", "example": "कावेरी जल बंटवारे जैसे विवाद संसद के कानूनों के माध्यम से हल किए जाते हैं।"},
+        324: {"simplifiedText": "चुनाव आयोग भारत में सभी चुनावों का प्रबंधन और नियंत्रण करता है।", "example": "चुनाव आयोग स्वतंत्र और निष्पक्ष चुनाव सुनिश्चित करता है।"},
+        356: {"simplifiedText": "यदि राज्य सरकार विफल हो जाती है, तो राष्ट्रपति नियंत्रण ले सकते हैं और राष्ट्रपति शासन लागू कर सकते हैं।", "example": "जब किसी राज्य में कानून और व्यवस्था विफल हो जाती है, तो केंद्र सरकार नियंत्रण लेती है।"}
+    }
+    
+    hindi_count = 0
+    for eng_article in english_articles:
+        # Check if Hindi version already exists
+        hindi_exists = await db.articles.find_one({
+            "articleNumber": eng_article['articleNumber'],
+            "language": "hi"
+        }, {"_id": 0})
+        
+        if not hindi_exists and eng_article['articleNumber'] in hindi_translations:
+            translation = hindi_translations[eng_article['articleNumber']]
+            hindi_article = Article(
+                articleNumber=eng_article['articleNumber'],
+                institution=eng_article['institution'],
+                originalText=eng_article['originalText'],
+                simplifiedText=translation['simplifiedText'],
+                example=translation['example'],
+                difficulty=eng_article['difficulty'],
+                language="hi"
+            )
+            
+            doc = hindi_article.model_dump()
+            doc['createdAt'] = doc['createdAt'].isoformat()
+            await db.articles.insert_one(doc)
+            hindi_count += 1
+    
+    return {"message": f"Added {hindi_count} Hindi article translations"}
+
 @api_router.post("/seed")
 async def seed_data():
     # Check if already seeded

@@ -11,6 +11,9 @@ import ArticleDetail from './pages/ArticleDetail';
 import SpinWheelGame from './pages/SpinWheelGame';
 import SnakeLadderGame from './pages/SnakeLadderGame';
 import CardGame from './pages/CardGame';
+import QuizGame from './pages/QuizGame';
+import BeTheJudgeGame from './pages/BeTheJudgeGame';
+import ChooseViolationGame from './pages/ChooseViolationGame';
 import Analytics from './pages/Analytics';
 import AdminPanel from './pages/AdminPanel';
 
@@ -48,6 +51,9 @@ function AppContent() {
         <Route path="/games/spin-wheel" element={<ProtectedRoute><SpinWheelGame /></ProtectedRoute>} />
         <Route path="/games/snake-ladder" element={<ProtectedRoute><SnakeLadderGame /></ProtectedRoute>} />
         <Route path="/games/card" element={<ProtectedRoute><CardGame /></ProtectedRoute>} />
+        <Route path="/games/quiz" element={<ProtectedRoute><QuizGame /></ProtectedRoute>} />
+        <Route path="/games/be-the-judge" element={<ProtectedRoute><BeTheJudgeGame /></ProtectedRoute>} />
+        <Route path="/games/choose-violation" element={<ProtectedRoute><ChooseViolationGame /></ProtectedRoute>} />
         <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
         <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
       </Routes>
