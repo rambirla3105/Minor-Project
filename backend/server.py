@@ -248,6 +248,53 @@ async def login(login_input: UserLogin):
 async def get_me(current_user: dict = Depends(get_current_user)):
     return UserResponse(**current_user)
 
+@api_router.post("/auth/change-password")
+async def change_password(
+    currentPassword: str,
+    newPassword: str,
+    current_user: dict = Depends(get_current_user)
+):
+    # Verify current password
+    if not verify_password(currentPassword, current_user['password']):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    # Hash new password
+    hashed_password = hash_password(newPassword)
+    
+    # Update password
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"password": hashed_password}}
+    )
+    
+    return {"message": "Password changed successfully"}
+
+@api_router.post("/auth/upload-photo")
+async def upload_photo(
+    file: bytes,
+    current_user: dict = Depends(get_current_user)
+):
+    # In a real app, you'd upload to S3 or similar
+    # For now, we'll just store a placeholder URL
+    photo_url = f"https://api.dicebear.com/7.x/avataaars/svg?seed={current_user['id']}"
+    
+    await db.users.update_one(
+        {"id": current_user['id']},
+        {"$set": {"photoUrl": photo_url}}
+    )
+    
+    return {"photoUrl": photo_url}
+
+@api_router.delete("/auth/delete-account")
+async def delete_account(current_user: dict = Depends(get_current_user)):
+    # Delete user's game attempts
+    await db.game_attempts.delete_many({"userId": current_user['id']})
+    
+    # Delete user
+    await db.users.delete_one({"id": current_user['id']})
+    
+    return {"message": "Account deleted successfully"}
+
 # ========== Article Routes ==========
 
 @api_router.get("/articles")

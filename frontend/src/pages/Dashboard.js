@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth, API } from '../contexts/AuthContext';
-import { Book, SignOut, ChartBar, GameController, MagnifyingGlass, FunnelSimple, GearSix, Cube, Cards, Star, Target, Gavel, Warning } from '@phosphor-icons/react';
+import { useTheme } from '../contexts/ThemeContext';
+import { Book, SignOut, ChartBar, GameController, MagnifyingGlass, FunnelSimple, GearSix, Cube, Cards, Star, Target, Gavel, Warning, Moon, Sun, UserCircle } from '@phosphor-icons/react';
 import axios from 'axios';
 import { toast } from 'sonner';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { user, logout, token, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -71,20 +73,35 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-[#FDFBF7] dark:bg-[#0A0A0B]">
       {/* Header */}
-      <header className="bg-[#FDFBF7] border-b-2 border-[#1A237E] sticky top-0 z-50 py-4">
+      <header className="bg-[#FDFBF7] dark:bg-[#0A0A0B] border-b-2 border-[#1A237E] dark:border-[#FFD54F] sticky top-0 z-50 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="bg-[#FF6B35] p-2 rounded-lg border-2 border-[#1A237E]">
+            <div className="bg-[#FF6B35] p-2 rounded-lg border-2 border-[#1A237E] dark:border-[#FFD54F]">
               <Book size={32} weight="bold" className="text-white" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-black font-heading text-[#1A237E]">Sansthaein Aur Samvidhan</h1>
-              <p className="text-sm font-medium text-[#1A237E]/70">Welcome, {user?.name}</p>
+              <h1 className="text-xl sm:text-2xl font-black font-heading text-[#1A237E] dark:text-[#FDFBF7]">Sansthaein Aur Samvidhan</h1>
+              <p className="text-sm font-medium text-[#1A237E]/70 dark:text-[#FDFBF7]/70">Welcome, {user?.name}</p>
             </div>
           </div>
           <div className="flex gap-2">
+            <button
+              data-testid="theme-toggle-btn"
+              onClick={toggleTheme}
+              className="neo-btn-secondary flex items-center gap-2"
+            >
+              {theme === 'light' ? <Moon size={20} weight="bold" /> : <Sun size={20} weight="bold" />}
+            </button>
+            <button
+              data-testid="profile-btn"
+              onClick={() => navigate('/profile')}
+              className="neo-btn-secondary flex items-center gap-2"
+            >
+              <UserCircle size={20} weight="bold" />
+              <span className="hidden sm:inline">Profile</span>
+            </button>
             <button
               data-testid="games-menu-btn"
               onClick={() => navigate('/games/spin-wheel')}
