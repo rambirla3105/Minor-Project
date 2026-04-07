@@ -1,53 +1,68 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Toaster } from './components/ui/sonner';
+import '@/App.css';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Pages
+import LandingPage from './pages/LandingPage';
+import Dashboard from './pages/Dashboard';
+import ArticleDetail from './pages/ArticleDetail';
+import SpinWheelGame from './pages/SpinWheelGame';
+import SnakeLadderGame from './pages/SnakeLadderGame';
+import CardGame from './pages/CardGame';
+import Analytics from './pages/Analytics';
+import AdminPanel from './pages/AdminPanel';
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-2xl font-bold text-[#1A237E]">Loading...</div>
+    </div>;
+  }
+  
+  return isAuthenticated ? children : <Navigate to="/" />;
 };
+
+const AdminRoute = ({ children }) => {
+  const { isAdmin, loading } = useAuth();
+  
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-2xl font-bold text-[#1A237E]">Loading...</div>
+    </div>;
+  }
+  
+  return isAdmin ? children : <Navigate to="/dashboard" />;
+};
+
+function AppContent() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/article/:id" element={<ProtectedRoute><ArticleDetail /></ProtectedRoute>} />
+        <Route path="/games/spin-wheel" element={<ProtectedRoute><SpinWheelGame /></ProtectedRoute>} />
+        <Route path="/games/snake-ladder" element={<ProtectedRoute><SnakeLadderGame /></ProtectedRoute>} />
+        <Route path="/games/card" element={<ProtectedRoute><CardGame /></ProtectedRoute>} />
+        <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+        <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
+      </Routes>
+      <Toaster position="top-right" />
+    </>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
+    <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
+        <AppContent />
       </BrowserRouter>
-    </div>
+    </AuthProvider>
   );
 }
 
