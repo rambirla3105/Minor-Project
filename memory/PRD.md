@@ -28,6 +28,8 @@ AI-Based Gamified Constitutional Learning Platform that simplifies constitutiona
 - [x] Article Detail page with AI simplification
 - [x] All 6 game modules built
 - [x] All 6 games visible in Article Detail page (P0 fix - Apr 7, 2026)
+- [x] Games Hub page — header "Games" button shows all 6 games (Apr 7, 2026)
+- [x] Auth modal input icon/placeholder overlap fix (Apr 7, 2026)
 - [x] Light/Dark mode toggle
 - [x] English/Hindi toggle
 - [x] User dashboard with stats and game links

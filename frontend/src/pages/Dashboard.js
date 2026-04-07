@@ -105,7 +105,7 @@ export default function Dashboard() {
             </button>
             <button
               data-testid="games-menu-btn"
-              onClick={() => navigate('/games/spin-wheel')}
+              onClick={() => navigate('/games')}
               className="neo-btn-secondary flex items-center gap-2"
             >
               <GameController size={20} weight="bold" />

@@ -115,7 +115,7 @@ export default function AuthModal({ isOpen, onClose, onLogin, onRegister }) {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="neo-input dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full pl-12"
+                      className="neo-input has-icon dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full"
                       placeholder="Enter your name"
                       required={!isLogin}
                     />
@@ -138,7 +138,7 @@ export default function AuthModal({ isOpen, onClose, onLogin, onRegister }) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="neo-input dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full pl-12"
+                    className="neo-input has-icon dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full"
                     placeholder="your@email.com"
                     required
                   />
@@ -160,7 +160,7 @@ export default function AuthModal({ isOpen, onClose, onLogin, onRegister }) {
                     type={showPassword ? 'text' : 'password'}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="neo-input dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full pl-12 pr-12"
+                    className="neo-input has-icon dark:bg-[#0A0A0B] dark:text-[#FDFBF7] dark:border-[#FFD54F] w-full pr-12"
                     placeholder="Enter password"
                     required
                   />

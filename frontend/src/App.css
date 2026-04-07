@@ -41,7 +41,10 @@
 }
 
 .neo-input {
-    @apply bg-white border-2 border-[#1A237E] rounded-lg px-4 py-3 text-base text-[#1A237E] placeholder:text-[#1A237E]/40 focus:outline-none focus:ring-0 focus:border-[#FF6B35] focus:shadow-[3px_3px_0px_#FF6B35] transition-all duration-200;
+    @apply bg-white border-2 border-[#1A237E] rounded-lg pr-4 pl-4 py-3 text-base text-[#1A237E] placeholder:text-[#1A237E]/40 focus:outline-none focus:ring-0 focus:border-[#FF6B35] focus:shadow-[3px_3px_0px_#FF6B35] transition-all duration-200;
+}
+.neo-input.has-icon {
+    padding-left: 3rem;
 }
 
 .dark .neo-input {

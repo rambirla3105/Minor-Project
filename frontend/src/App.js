@@ -20,6 +20,7 @@ import Analytics from './pages/Analytics';
 import AdminPanel from './pages/AdminPanel';
 import ProfilePage from './pages/ProfilePage';
 import LearnPage from './pages/LearnPage';
+import GamesHub from './pages/GamesHub';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -66,6 +67,7 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/article/:id" element={<ProtectedRoute><ArticleDetail /></ProtectedRoute>} />
+        <Route path="/games" element={<ProtectedRoute><GamesHub /></ProtectedRoute>} />
         <Route path="/games/spin-wheel" element={<ProtectedRoute><SpinWheelGame /></ProtectedRoute>} />
         <Route path="/games/snake-ladder" element={<ProtectedRoute><SnakeLadderGame /></ProtectedRoute>} />
         <Route path="/games/card" element={<ProtectedRoute><CardGame /></ProtectedRoute>} />
